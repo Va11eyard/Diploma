@@ -1,7 +1,9 @@
+"use client"
+
 import type React from "react"
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { HomeIcon, UsersIcon, VideoIcon, MenuIcon } from "lucide-react"
+import { FiHome, FiUsers, FiVideo, FiMenu } from "react-icons/fi"
 
 const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -12,9 +14,9 @@ const Sidebar: React.FC = () => {
   }
 
   const navItems = [
-    { path: "/", icon: HomeIcon, label: "Home" },
-    { path: "/users", icon: UsersIcon, label: "Users" },
-    { path: "/videos", icon: VideoIcon, label: "Videos" },
+    { path: "/", icon: FiHome, label: "Home" },
+    { path: "/users", icon: FiUsers, label: "Users" },
+    { path: "/videos", icon: FiVideo, label: "Videos" },
   ]
 
   return (
@@ -23,7 +25,7 @@ const Sidebar: React.FC = () => {
         className="fixed p-2 bg-primary text-white rounded-tr-md rounded-br-md lg:hidden z-20 mt-2 ml-2"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <MenuIcon size={24} />
+        <FiMenu size={24} aria-hidden="true" />
       </button>
       <div
         className={`bg-primary text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform ${
@@ -43,7 +45,7 @@ const Sidebar: React.FC = () => {
                     : "hover:bg-white hover:bg-opacity-5 text-gray-300 hover:text-white"
                 }`}
               >
-                <IconComponent className="mr-3" size={20} />
+                <IconComponent className="mr-3" size={20} aria-hidden="true" />
                 {item.label}
               </Link>
             )

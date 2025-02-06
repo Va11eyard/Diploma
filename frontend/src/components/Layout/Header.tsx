@@ -1,13 +1,20 @@
+"use client"
+
 import type React from "react"
 import { useNavigate } from "react-router-dom"
 import { logout } from "../../services/auth"
-import { LogOutIcon } from "lucide-react"
+import { FiLogOut } from "react-icons/fi"
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  setIsAuthenticated: (isAuthenticated: boolean) => void
+}
+
+const Header: React.FC<HeaderProps> = ({ setIsAuthenticated }) => {
   const navigate = useNavigate()
 
   const handleLogout = () => {
     logout()
+    setIsAuthenticated(false)
     navigate("/login")
   }
 
@@ -20,7 +27,7 @@ const Header: React.FC = () => {
             onClick={handleLogout}
             className="flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary focus:ring-white"
           >
-            <LogOutIcon className="mr-2" size={16} />
+            <FiLogOut className="mr-2" size={16} aria-hidden="true" />
             Logout
           </button>
         </div>
