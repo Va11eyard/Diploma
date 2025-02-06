@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@types/react": "^19.0.8",
+    "axios": "^1.7.9",
+    "lucide-react": "^0.474.0",
+    "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.9.36",
+    "@types/react-router-dom": "^5.3.3"
+  }
+}
