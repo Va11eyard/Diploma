@@ -11,7 +11,6 @@ import secrets
 
 router = APIRouter()
 
-# ✅ Handle OPTIONS requests explicitly
 @router.options("/login")
 async def options_login():
     response = JSONResponse(content={"message": "CORS preflight successful"})

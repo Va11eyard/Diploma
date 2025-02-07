@@ -3,15 +3,13 @@
 import type React from "react"
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { FiHome, FiUsers, FiVideo, FiMenu } from "react-icons/fi"
+import { FiHome, FiUsers, FiVideo, FiMenu, FiX } from "react-icons/fi"
 
 const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const location = useLocation()
 
-  const isActive = (path: string) => {
-    return location.pathname === path
-  }
+  const isActive = (path: string) => location.pathname === path
 
   const navItems = [
     { path: "/", icon: FiHome, label: "Home" },
@@ -21,35 +19,38 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
+      {/* Mobile Toggle Button */}
       <button
-        className="fixed p-2 bg-primary text-white rounded-tr-md rounded-br-md lg:hidden z-20 mt-2 ml-2"
+        className="fixed p-3 bg-black text-white rounded-r-md lg:hidden z-20 mt-3 ml-2 shadow-md"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <FiMenu size={24} aria-hidden="true" />
+        {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
       </button>
+
+      {/* Sidebar Container */}
       <div
-        className={`bg-primary text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:relative lg:translate-x-0 transition duration-200 ease-in-out z-10 min-h-screen`}
+        className={`bg-black text-white w-64 space-y-6 py-6 px-4 absolute inset-y-0 left-0 transform 
+          ${isOpen ? "translate-x-0" : "-translate-x-full"} 
+          lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out z-10 min-h-screen shadow-lg`}
       >
+        {/* Logo / Branding */}
+        <div className="text-center text-xl font-bold mb-6 tracking-wide">
+          Dashboard
+        </div>
+
+        {/* Navigation Links */}
         <nav className="space-y-2">
-          {navItems.map((item) => {
-            const IconComponent = item.icon
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center py-2.5 px-4 rounded transition duration-200 ${
-                  isActive(item.path)
-                    ? "bg-white bg-opacity-10 text-white"
-                    : "hover:bg-white hover:bg-opacity-5 text-gray-300 hover:text-white"
-                }`}
-              >
-                <IconComponent className="mr-3" size={20} aria-hidden="true" />
-                {item.label}
-              </Link>
-            )
-          })}
+          {navItems.map(({ path, icon: Icon, label }) => (
+            <Link
+              key={path}
+              to={path}
+              className={`flex items-center py-3 px-4 rounded-lg transition-all duration-200 font-medium 
+                ${isActive(path) ? "bg-white bg-opacity-20 text-white" : "hover:bg-white hover:bg-opacity-10 text-gray-300"}`}
+            >
+              <Icon className="mr-3" size={20} />
+              {label}
+            </Link>
+          ))}
         </nav>
       </div>
     </>
@@ -57,4 +58,3 @@ const Sidebar: React.FC = () => {
 }
 
 export default Sidebar
-

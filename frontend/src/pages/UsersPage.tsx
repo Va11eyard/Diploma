@@ -69,7 +69,7 @@ const UsersPage: React.FC = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Users</h1>
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+        className="bg-black hover:bg-green-500 text-white font-bold py-2 px-4 rounded mb-4"
         onClick={() => setIsFormOpen(true)}
       >
         Add New User

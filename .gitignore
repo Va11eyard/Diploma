@@ -10,5 +10,5 @@ backend/alembic.ini
 
 backend/alembic/
 
-backend/
+backend/uploads/
 
