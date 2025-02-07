@@ -30,3 +30,17 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         )
     access_token = create_access_token(subject=user.email)
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.post("/register")
+def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
+    existing_user = db.query(User).filter(User.email == user_data.email).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    hashed_password = get_password_hash(user_data.password)
+    new_user = User(email=user_data.email, hashed_password=hashed_password)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return {"message": "User registered successfully"}

@@ -1,41 +1,44 @@
-import type React from "react"
-import { useState } from "react"
-import { useNavigate, Link } from "react-router-dom"
-import { register } from "../../services/auth"
+import type React from "react";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { register } from "../../services/auth";
 
 const Register: React.FC = () => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [error, setError] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
+    e.preventDefault();
+    setError("");
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long")
-      return
+    if (!email.trim()) {
+      setError("Email is required");
+      return;
     }
-
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      return;
+    }
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
-      return
+      setError("Passwords do not match");
+      return;
     }
 
     try {
-      setIsLoading(true)
-      await register(email, password)
-      navigate("/login")
+      setIsLoading(true);
+      await register(email.trim(), password);
+      navigate("/login");
     } catch (err: any) {
-      console.error("Registration error:", err)
-      setError(err.message || "Registration failed. Please try again.")
+      console.error("Registration error:", err);
+      setError(err.message || "Registration failed. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-primary-50">
@@ -120,8 +123,7 @@ const Register: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
-
+export default Register;
