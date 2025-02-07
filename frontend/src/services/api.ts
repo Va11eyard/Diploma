@@ -1,4 +1,6 @@
 import axios from "axios"
+import type { AxiosError } from "axios/index"
+
 
 const api = axios.create({
   baseURL: "http://localhost:8000/api",
@@ -6,10 +8,10 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
   withCredentials: true,
-  timeout: 10000, // 10 second timeout
+  timeout: 10000, // 10-second timeout
 })
 
-// Add request interceptor for error handling
+// Request Interceptor: Attach Authorization Token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token")
@@ -24,40 +26,32 @@ api.interceptors.request.use(
   },
 )
 
-// Define a type for the expected error structure
-interface ApiError {
-  isAxiosError: boolean
-  response?: {
-    data?: {
-      detail?: string
-    }
-    status?: number
-  }
-  request?: any
-  message?: string
-}
-
-// Add response interceptor for error handling
+// Response Interceptor: Handle API Errors
 api.interceptors.response.use(
   (response) => response,
-  (error: unknown) => {
-    const apiError = error as ApiError
-    if (apiError.isAxiosError) {
-      if (apiError.response) {
-        console.error("Response error:", apiError.response.data)
-        throw new Error(
-          apiError.response.data?.detail || `Error ${apiError.response?.status || "unknown"}: An error occurred`,
-        )
-      } else if (apiError.request) {
-        console.error("Network error:", apiError.request)
-        throw new Error("Network error. Please check your connection.")
+  (error: AxiosError<{ detail?: string }>) => {
+    if (error.response) {
+      const status = error.response.status
+      const message = error.response.data?.detail || `Error ${status}: An error occurred`
+
+      if (status === 401) {
+        console.warn("Unauthorized: Redirecting to login...")
+        // Optional: Redirect to login page
+        // window.location.href = "/login"
+      } else if (status === 403) {
+        console.warn("Forbidden: You don’t have permission.")
       }
+
+      console.error("Response error:", message)
+      throw new Error(message)
+    } else if (error.request) {
+      console.error("Network error:", error.request)
+      throw new Error("Network error. Please check your connection.")
     } else {
-      console.error("Unexpected error:", apiError.message)
+      console.error("Unexpected error:", error.message)
       throw new Error("An unexpected error occurred.")
     }
   },
 )
 
 export default api
-

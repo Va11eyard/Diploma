@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from datetime import datetime
 
 class VideoBase(BaseModel):
     title: str
@@ -13,10 +12,6 @@ class VideoUpdate(VideoBase):
 class Video(VideoBase):
     id: int
     file_path: str
-    uploaded_by: int
-    created_at: datetime
-    updated_at: datetime | None
 
     class Config:
-        orm_mode = True
-
+        from_attributes = True  # Updated for Pydantic V2

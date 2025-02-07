@@ -1,3 +1,27 @@
+Backend/
+├── alembic/
+│   └── versions/
+├── app/
+│   ├── api/
+│   │   ├── auth.py
+│   │   ├── users.py
+│   │   └── videos.py
+│   ├── core/
+│   │   ├── config.py
+│   │   ├── database.py
+│   │   ├── email.py
+│   │   └── security.py
+│   ├── models/
+│   │   ├── user.py
+│   │   ├── video.py
+│   ├── schemas/
+│   │   ├── user.py
+│   │   ├── video.py
+│   ├── main.py
+│   └── __init__.py
+├── requirements.txt
+└── alembic.ini
+
 frontend/
 ├── public/
 │   └── index.html
