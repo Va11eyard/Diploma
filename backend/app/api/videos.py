@@ -10,7 +10,7 @@ router = APIRouter()
 
 UPLOAD_DIRECTORY = "uploads/"
 if not os.path.exists(UPLOAD_DIRECTORY):
-    os.makedirs(UPLOAD_DIRECTORY)  # Ensure the upload directory exists
+    os.makedirs(UPLOAD_DIRECTORY)  # Ensure the directory exists
 
 @router.get("/", response_model=List[VideoSchema])
 def read_videos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -27,17 +27,11 @@ async def create_video(
     with open(file_path, "wb") as buffer:
         buffer.write(await file.read())
 
-    db_video = Video(title=title, file_path=file_path)
+    # Store only the filename in the database, not full path
+    db_video = Video(title=title, file_path=file.filename)
     db.add(db_video)
     db.commit()
     db.refresh(db_video)
-    return db_video
-
-@router.get("/{video_id}", response_model=VideoSchema)
-def read_video(video_id: int, db: Session = Depends(get_db)):
-    db_video = db.query(Video).filter(Video.id == video_id).first()
-    if not db_video:
-        raise HTTPException(status_code=404, detail="Video not found")
     return db_video
 
 @router.delete("/{video_id}", response_model=VideoSchema)
@@ -46,8 +40,9 @@ def delete_video(video_id: int, db: Session = Depends(get_db)):
     if not db_video:
         raise HTTPException(status_code=404, detail="Video not found")
 
-    if os.path.exists(db_video.file_path):
-        os.remove(db_video.file_path)
+    file_path = os.path.join(UPLOAD_DIRECTORY, db_video.file_path)
+    if os.path.exists(file_path):
+        os.remove(file_path)
 
     db.delete(db_video)
     db.commit()

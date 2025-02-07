@@ -10,15 +10,10 @@ export const uploadVideo = async (file: File, title: string) => {
   formData.append("file", file);
   formData.append("title", title);
 
-  try {
-    const response = await api.post("/videos/", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    return response.data;
-  } catch (error: any) {
-    console.error("Upload error:", error.response?.data || error.message);
-    throw error;
-  }
+  const response = await api.post("/videos/", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return response.data;
 };
 
 export const deleteVideo = async (videoId: number) => {
