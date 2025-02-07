@@ -2,8 +2,9 @@
 
 import type React from "react"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { login } from "../../services/auth"
+import { FiLogIn, FiUserPlus } from "react-icons/fi"
 
 interface LoginProps {
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
@@ -76,10 +77,23 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
             type="submit"
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
+            <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+              <FiLogIn className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
+            </span>
             Sign in
           </button>
         </div>
       </form>
+      <div className="text-center">
+        <Link
+          to="/register"
+          className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+          </span>
+          Do not have an account? Register
+        </Link>
+      </div>
     </div>
   )
 }
